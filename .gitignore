@@ -1,6 +1,6 @@
 
-# Secrets
-secrets.yaml
-
 # Environment
 venv
+
+# Build Files 
+egg-info
