@@ -1,0 +1,9 @@
+README.md
+pyproject.toml
+src/ai_proof_tutor.egg-info/PKG-INFO
+src/ai_proof_tutor.egg-info/SOURCES.txt
+src/ai_proof_tutor.egg-info/dependency_links.txt
+src/ai_proof_tutor.egg-info/requires.txt
+src/ai_proof_tutor.egg-info/top_level.txt
+src/tutor/give_advice.py
+src/tutor/query_openai.py
