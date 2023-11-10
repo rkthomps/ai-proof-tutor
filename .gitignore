@@ -3,4 +3,4 @@
 venv
 
 # Build Files 
-egg-info
+*.egg-info
