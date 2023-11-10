@@ -16,7 +16,7 @@ def get_tutor_response(
     system_message = "Hi"
     user_message = "Hi"
     temperature = 0
-    model_name = "gpt-4"
+    model_name = "gpt-3.5-turbo"
     return get_gpt4_response(
         system_message,
         user_message,
