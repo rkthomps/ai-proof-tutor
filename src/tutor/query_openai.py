@@ -1,7 +1,6 @@
 import os
 
 from openai import OpenAI
-from yaml import load, Loader
 
 SECRETS_PATH = "secrets.yaml"
 
