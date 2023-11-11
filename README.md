@@ -15,7 +15,7 @@
 
 ### Adding your OpenAi Keys
 Set the environment variable `OPENAI_API_KEY` to your api key. Set the environment variable `OPENAI_ORG_KEY` to your org key.
-You can create an api key here: [](https://platform.openai.com/api-keys). You can find your organization key here: [](https://platform.openai.com/account/organization). 
+You can create an api key [here](https://platform.openai.com/api-keys). You can find your organization key [here](https://platform.openai.com/account/organization). 
 
 ### Running the Proof Tutor
 - You are now ready to run the bare-bones proof tutor!
