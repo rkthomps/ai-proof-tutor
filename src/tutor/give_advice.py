@@ -42,17 +42,17 @@ def get_conversation(stage):
     conversation = []
     match stage:
         case "Stage 1":
-            conversation = [{"role": "system", "content": "You are a tutor for an introductory math proof writing class. You are helping a student who does not understand the problem they are working on. Do not give any part of the proof."}]
+            conversation = [{"role": "system", "content": "You are a tutor for an introductory math proof writing class. You are helping a student who does not understand the problem they are working on. Do not give any part of the proof.\n"}]
             return conversation + proof_bank[0][0] + proof_bank[0][1]
         case "Stage 2":
-            conversation = [{"role": "system", "content": "You are a tutor for an introductory math proof writing class. You are helping a student who understands the problem they are working on, but does not know how to begin writing the proof. Suggest which methods of proof may be successful for the problem. Do not give away any part of the proof."}]
+            conversation = [{"role": "system", "content": "You are a tutor for an introductory math proof writing class. You are helping a student who understands the problem they are working on, but does not know how to begin writing the proof. Suggest which methods of proof may be successful for the problem. Do not give away any part of the proof.\n"}]
             return conversation + proof_bank[1][0] + proof_bank[1][1]
         case "Stage 3":
-            conversation = [{"role": "system", "content": "You are a tutor for an introductory math proof writing class. You are helping a student who has begun writing a proof for the problem statement but doesn’t know how to proceed to a finished proof. Verify whether or not the student is on the right track. If they are on the right track, give a hint for the next step. If they are not on the right track, identify what they did wrong. Do not give away any parts of the correct proof."}]
-            return proof_bank[2][0] + proof_bank[2][1]
+            conversation = [{"role": "system", "content": "You are a tutor for an introductory math proof writing class. You are helping a student who has begun writing a proof for the problem statement but doesn’t know how to proceed to a finished proof. Verify whether or not the student is on the right track. If they are on the right track, give a hint for the next step. If they are not on the right track, identify what they did wrong. Do not give away any parts of the correct proof.\n"}]
+            return conversation + proof_bank[2][0] + proof_bank[2][1]
         case "Stage 4":
-            conversation = [{"role": "system", "content": "You are a tutor for an introductory math proof writing class. You are helping a student who completed a proof for the problem statement and wants to verify the correctness of their proof. Do not give any part of the proof."}]
-            return proof_bank[3][0] + proof_bank[3][1]
+            conversation = [{"role": "system", "content": "You are a tutor for an introductory math proof writing class. You are helping a student who completed a proof for the problem statement and wants to verify the correctness of their proof. Do not give any part of the proof.\n"}]
+            return conversation + proof_bank[3][0] + proof_bank[3][1]
 
 # def get_few_shot_examples(proof_strategy):
 #     match proof_strategy:
@@ -66,7 +66,7 @@ def get_conversation(stage):
 #             return
 
 def get_tutor_response(proof, stage, user_message):
-    conversation = get_conversation(stage)
+    conversation = get_conversation(stage[0:7])
     conversation.append({"role": "user", "content": f"I am working on proving the statement:\n{proof}\n{user_message}\n"})
     # match method:
     #     case "zero_shot":
@@ -136,7 +136,7 @@ if __name__ == "__main__":
                 ["Contradiction", "Witness", "Induction", "Other"], label="Proof", info="Which proof would you like assistance on?"
             ),
                 gr.Dropdown(
-                ["Stage 1: I don't understand the problem", "Stage 2: I don't know how to begin", "Stage 3: I don't know how to proceed", "Stage 4: I completed the proof"], label="Stage", info="What stage of the proof writing process are you on?"
+                ["Stage 1: I don't understand the problem.", "Stage 2: I don't know how to begin.", "Stage 3: I don't know how to proceed.", "Stage 4: I completed the proof."], label="Stage", info="What stage of the proof writing process are you on?"
             ),
                 "text"],
         outputs=["text"],
