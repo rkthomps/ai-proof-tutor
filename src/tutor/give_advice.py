@@ -2,6 +2,7 @@ import sys, os
 import argparse
 from openai import OpenAI
 import gradio as gr
+import time
 
 from tutor.query_openai import get_gpt4_response, get_client
 
@@ -65,23 +66,30 @@ def get_conversation(stage):
 #         case "Other":
 #             return
 
-def get_tutor_response(proof, stage, user_message):
-    conversation = get_conversation(stage[0:7])
-    conversation.append({"role": "user", "content": f"I am working on proving the statement:\n{proof}\n{user_message}\n"})
-    # match method:
-    #     case "zero_shot":
-    #         user_message.append(f"I am working on proving the statement:\n{theorem_statement}\n{proof_attempt}\n")
-    #     case "few_shot":
-    #     case "correct_proof":
-    #         assistant_message.append(f"{ground_truth_proof}\nis the correct proof for the statement\n{theorem_statement}\n")
-    #         user_message.append(f"{proof_attempt}\n")
+def get_tutor_response(user_message, chat_history, proof, stage):
+    conversation = []
+    # initial query (few shot)
+    if chat_history == []:
+        conversation = get_conversation(stage[0:7])
+        conversation.append({"role": "user", "content": f"I am working on proving the statement:\n{proof}\n{user_message}\n"})
+    # continued conversation
+    else:
+        # chat_history: (user, assistant) tuples.
+        for message in chat_history:
+            conversation.append({"role": "user", "content": message[0]})
+            conversation.append({"role": "assistant", "content": message[1]})
+        conversation.append({"role": "user", "content": user_message})
     temperature = 0
     model_name = "gpt-4"
-    return get_gpt4_response(
+    print(conversation)
+    bot_message = get_gpt4_response(
         conversation,
         temperature,
         model_name
     )
+    chat_history.append((user_message, bot_message))
+    time.sleep(1)
+    return "", chat_history
 
 
 # def format_response(
@@ -96,6 +104,7 @@ def get_tutor_response(proof, stage, user_message):
 
 
 if __name__ == "__main__":
+    # COMMAND LINE TOOL VERSION
     # parser = argparse.ArgumentParser(
     #     "Command line interface (CLI) for CSE 20 AI Tutor."
     # )
@@ -130,15 +139,36 @@ if __name__ == "__main__":
     # print(
     #     format_response(theorem_statement, proof_attempt, ground_truth_proof, response)
     # )
-    demo = gr.Interface(
-        fn=get_tutor_response,
-        inputs=[gr.Dropdown(
-                ["Contradiction", "Witness", "Induction", "Other"], label="Proof", info="Which proof would you like assistance on?"
-            ),
-                gr.Dropdown(
-                ["Stage 1: I don't understand the problem.", "Stage 2: I don't know how to begin.", "Stage 3: I don't know how to proceed.", "Stage 4: I completed the proof."], label="Stage", info="What stage of the proof writing process are you on?"
-            ),
-                "text"],
-        outputs=["text"],
-    )
+
+
+    # SINGLE ROUND VERSION
+    # demo = gr.Interface(
+    #     fn=get_tutor_response,
+    #     inputs=[gr.Dropdown(
+    #             ["Contradiction", "Witness", "Induction", "Other"], label="Proof", info="Which proof would you like assistance on?"
+    #         ),
+    #             gr.Dropdown(
+    #             ["Stage 1: I don't understand the problem.", "Stage 2: I don't know how to begin.", "Stage 3: I don't know how to proceed.", "Stage 4: I completed the proof."], label="Stage", info="What stage of the proof writing process are you on?"
+    #         ),
+    #             "text"],
+    #     outputs=["text"],
+    # )
+
+
+    # MULTIROUND CHATBOT VERSION
+    with gr.Blocks() as demo:
+        proof = gr.Dropdown(["Contradiction", "Witness", "Induction", "Other"], label="Proof", info="Which proof would you like assistance on?")        
+        stage = gr.Dropdown(["Stage 1: I don't understand the problem.", "Stage 2: I don't know how to begin.", "Stage 3: I don't know how to proceed.", "Stage 4: I completed the proof."], label="Stage", info="What stage of the proof writing process are you on?")        
+        chatbot = gr.Chatbot()
+        message = gr.Textbox()
+        clear = gr.ClearButton([message, chatbot])
+
+        # def respond(message, chat_history, problem, step):
+        #     bot_message = "Helping with " + problem + " on " + step
+        #     chat_history.append((message, bot_message))
+        #     time.sleep(1)
+        #     return "", chat_history
+
+        message.submit(get_tutor_response, [message, chatbot, proof, stage], [message, chatbot])
+
     demo.launch(share=True)
