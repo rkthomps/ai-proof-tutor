@@ -81,7 +81,6 @@ def get_tutor_response(user_message, chat_history, proof, stage):
         conversation.append({"role": "user", "content": user_message})
     temperature = 0
     model_name = "gpt-4"
-    print(conversation)
     bot_message = get_gpt4_response(
         conversation,
         temperature,
