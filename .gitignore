@@ -4,3 +4,4 @@ venv
 
 # Build Files 
 *.egg-info
+*.pyc
