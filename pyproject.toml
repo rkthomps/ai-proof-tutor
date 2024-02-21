@@ -5,4 +5,4 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "ai-proof-tutor"
 version = "0.0.1"
-dependencies = ["openai", "PyYAML"]
+dependencies = ["openai", "ipdb"]
