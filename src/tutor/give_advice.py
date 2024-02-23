@@ -6,6 +6,7 @@ import time
 import random
 
 from tutor.query_openai import get_gpt4_response, get_client
+from tutor.check_formal_proof import get_formal_checker_response
 
 
 # def read_file(file_path: str) -> str:
@@ -288,13 +289,13 @@ def get_conversation(stage, proof_strategy):
     #         conversation = [{"role": "system", "content": "You are a tutor for an introductory math proof writing class. You are helping a student who completed a proof for the problem statement and wants to verify the correctness of their proof. Do not give any part of the proof.\n"}]
     #         return conversation + proof_bank[3][0] + proof_bank[3][1]
 
-def get_tutor_response(user_message, chat_history, proof_statement, proof_strategy, stage):
+def get_tutor_response(user_message, chat_history, proof_statement, stage, proof_strategy):
     conversation = []
     # initial query (few shot)
     if chat_history == []:
         conversation = get_conversation(stage[0:7], proof_strategy)
-        conversation.append({"role": "user", "content": f"I am working on proving the statement:\n{proof_statement}\nUsing proof strategy: {proof_strategy}\n{user_message}\n"})
-        print(conversation)
+        conversation.append({"role": "user", "content": f"I am working on the proof:\n{proof_statement}\n{user_message}\n"})
+        # print(conversation)
     # continued conversation
     else:
         # chat_history: (user, assistant) tuples.
@@ -309,6 +310,16 @@ def get_tutor_response(user_message, chat_history, proof_statement, proof_strate
         temperature,
         model_name
     )
+    if stage[0:7] == "Stage 4" and not get_formal_checker_response(user_message, proof_statement):
+        print("formal proof incorrect")
+        conversation.pop()
+        # feed back to GPT-4, but mention attempt is incorrect
+        conversation.append(({"role": "user", "content": f"I am working on the proof:\n{proof_statement}\nMy proof attempt is incorrect, please guide me.\n{user_message}\n"}))
+        bot_message = get_gpt4_response(
+            conversation,
+            temperature,
+            model_name
+        )
     chat_history.append((user_message, bot_message))
     time.sleep(1)
     return "", chat_history
@@ -376,21 +387,20 @@ if __name__ == "__main__":
     #     outputs=["text"],
     # )
 
-    # def sub():
-    #     message.submit(get_tutor_response, [message, chatbot, proof, stage], [message, chatbot])
-        
-
     # MULTIROUND CHATBOT VERSION
-    with gr.Blocks() as demo:
-        proof_statement = gr.Textbox(label="Proof Statement")
-        proof_strategy = gr.Dropdown(["Contradiction", "Contrapositive", "Direct", "Induction", "Witness", "Other or I Don't Know"], label="Proof Strategy", info="Which proof would you like assistance on?")        
-        stage = gr.Dropdown(["Stage 1: I don't understand the problem.", "Stage 2: I don't know how to begin.", "Stage 3: I don't know how to proceed.", "Stage 4: I completed the proof."], label="Stage", info="What stage of the proof writing process are you on?")        
-        chatbot = gr.Chatbot()
-        # chatbot = gr.ChatInterface()
-        message = gr.Textbox(label="Message")
-        clear = gr.ClearButton([message, chatbot])
-        # submit = gr.Button("Submit").click(sub())
+    with gr.Blocks() as tutor:
+        with gr.Row():
+            with gr.Column():
+                proof_statement = gr.Dropdown(["OddSumEven", "Other"], allow_custom_value = True, label="Proof Statement", info="Which proof would you like assistance on?")
+                stage = gr.Dropdown(["Stage 1: I don't understand the problem.", "Stage 2: I don't know how to begin.", "Stage 3: I don't know how to proceed.", "Stage 4: I completed the proof."], label="Stage", info="What stage of the proof writing process are you on?")        
+                proof_strategy = gr.Dropdown(["Contradiction", "Contrapositive", "Direct", "Induction", "Witness"], label="Proof Strategy - Optional", info="Do you know which proof strategy to use?")        
+                message = gr.Textbox(label="Message")
+                submit = gr.Button("Send")
+            with gr.Column():
+                chatbot = gr.Chatbot(show_copy_button = True)
+                clear = gr.ClearButton([message, chatbot])
+            
+        submit.click(get_tutor_response, [message, chatbot, proof_statement, stage, proof_strategy], [message, chatbot])
 
-        message.submit(get_tutor_response, [message, chatbot, proof_statement, proof_strategy, stage], [message, chatbot])
-
-    demo.launch(share=True)
+    tutor.launch(share=True)
+    
