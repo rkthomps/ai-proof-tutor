@@ -390,16 +390,16 @@ if __name__ == "__main__":
     # MULTIROUND CHATBOT VERSION
     with gr.Blocks() as tutor:
         with gr.Row():
-            with gr.Column():
-                proof_statement = gr.Dropdown(["OddSumEven", "Other"], allow_custom_value = True, label="Proof Statement", info="Which proof would you like assistance on?")
-                stage = gr.Dropdown(["Stage 1: I don't understand the problem.", "Stage 2: I don't know how to begin.", "Stage 3: I don't know how to proceed.", "Stage 4: I completed the proof."], label="Stage", info="What stage of the proof writing process are you on?")        
-                proof_strategy = gr.Dropdown(["Contradiction", "Contrapositive", "Direct", "Induction", "Witness"], label="Proof Strategy - Optional", info="Do you know which proof strategy to use?")        
-                message = gr.Textbox(label="Message")
+            proof_statement = gr.Dropdown(["OddSumEven", "Other"], allow_custom_value = True, label="Proof Statement", info="Which proof would you like assistance on?")
+            stage = gr.Dropdown(["Stage 1: I don't understand the problem.", "Stage 2: I don't know how to begin.", "Stage 3: I don't know how to proceed.", "Stage 4: I completed the proof."], label="Stage", info="What stage of the proof writing process are you on?")        
+            proof_strategy = gr.Dropdown(["Contradiction", "Contrapositive", "Direct", "Induction", "Witness"], label="Proof Strategy - Optional", info="Do you know which proof strategy to use?")        
+        with gr.Row():
+            with gr.Column(scale = 1):
+                message = gr.Textbox(label = "Message", lines = 13)
                 submit = gr.Button("Send")
-            with gr.Column():
-                chatbot = gr.Chatbot(show_copy_button = True)
+            with gr.Column(scale = 2):
+                chatbot = gr.Chatbot(show_copy_button = True, height = 345)
                 clear = gr.ClearButton([message, chatbot])
-            
         submit.click(get_tutor_response, [message, chatbot, proof_statement, stage, proof_strategy], [message, chatbot])
 
     tutor.launch(share=True)
