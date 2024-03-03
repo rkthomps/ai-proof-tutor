@@ -69,9 +69,52 @@ def check_proof(formal_proof: str, stub_no_lean_name: str) -> ProofCheckResult:
         with open(stub_loc, "w") as fout:
             fout.write(stub_contents)
 
+def get_formalized_statement(stub_no_lean_name: str):
+    assert not os.path.exists(TMP_OUT_LOC)
+    stub_lean_name = f"{stub_no_lean_name}.lean"
+    stub_loc = os.path.join(STUB_PROJECT_PATH, PROOF_DIR, stub_lean_name)
+    stub_contents = __get_contents(stub_loc)
+    lines = stub_contents.split('\n')
+    for line in lines:
+        if re.match(r'^theorem', line):
+            return line.strip()
+
+def get_correct_informal(correct_no_txt_name: str):
+    assert not os.path.exists(TMP_OUT_LOC)
+    correct_txt_name = f"{correct_no_txt_name}.txt"
+    correct_loc = os.path.join(STUB_PROJECT_PATH, PROOF_DIR, correct_txt_name)
+    return __get_contents(correct_loc)        
+
+def get_correct_formal(correct_no_lean_name: str):
+    assert not os.path.exists(TMP_OUT_LOC)
+    correct_lean_name = f"{correct_no_lean_name}.lean"
+    correct_loc = os.path.join(STUB_PROJECT_PATH, PROOF_DIR, correct_lean_name)
+    correct_contents = __get_contents(correct_loc)
+    # return re.search(r'by\n(.*?)', __get_contents(correct_loc), re.DOTALL).group(1)
+    lines = correct_contents.split('\n')
+    theorem_found = False
+    proof_lines = []
+    for line in lines:
+        if not theorem_found and re.match(r'^theorem', line):
+            theorem_found = True
+        elif theorem_found:
+            proof_lines.append(line)
+    print(proof_lines)
+    return '\n'.join(proof_lines)
+
 def get_formal_checker_response(informal_proof: str, proof_statement:str):
-    conversation = [{"role": "system", "content": "You are a proof translator. You take as input natural language proofs and you produce formal proofs in the Lean 4 programming language. No explanation included, pure Lean 4 formal proof."}]
-    conversation.append({"role": "user", "content": informal_proof})
+    conversation = [{"role": "system", "content": "You are a proof translator. You take as input natural language proofs and you produce formal proofs in the Lean 4 programming language. Exact translation line to line. Don’t try to make it into correct lean proof. No explanation included, pure Lean 4 formal proof."}]
+    formalized_statement = get_formalized_statement(proof_statement + "Stub")
+    print(formalized_statement)
+    print("-----")
+    correct_informal = get_correct_informal(proof_statement + "Correct")
+    print(correct_informal)
+    correct_formal = get_correct_formal(proof_statement + "Correct")
+    print(correct_formal)
+    print("-----")
+    conversation.append({"role": "user", "content": f"{correct_informal}\nGive a proof of the following lean 4 theorem statement:\n{formalized_statement}"})
+    conversation.append({"role": "assistant", "content": correct_formal})
+    conversation.append({"role": "user", "content": f"{informal_proof}\nGive a proof of the following lean 4 theorem statement:\n{formalized_statement}"})
     temperature = 0
     model_name = "gpt-4"
     formal_proof = get_gpt4_response(
@@ -80,9 +123,9 @@ def get_formal_checker_response(informal_proof: str, proof_statement:str):
         model_name
     )
     print(formal_proof)
-    pattern = r'begin\n(.*?)\nend'
-    formal_proof = re.search(pattern, formal_proof, re.DOTALL).group(1)
-    print(formal_proof)
+    # pattern = r'begin\n(.*?)\nend'
+    # formal_proof = re.search(pattern, formal_proof, re.DOTALL).group(1)
+    # print(formal_proof)
     result = check_proof(formal_proof, proof_statement + "Stub")
     print(result)
     return result.correct
