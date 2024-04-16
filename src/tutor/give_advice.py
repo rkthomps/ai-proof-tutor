@@ -288,6 +288,7 @@ def get_tutor_response(user_message, chat_history, proof_statement, stage, proof
         model_name
     )
 
+    '''
     # target stage 4 correctness
     if stage[0:7] == "Stage 4":
         # informal correctness
@@ -335,6 +336,7 @@ def get_tutor_response(user_message, chat_history, proof_statement, stage, proof
                 print("informal incorrect / formal incorrect, correctly found mistakes, do nothing")
             case _, _:
                 print("error")
+    '''
 
     chat_history.append((user_message, bot_message))
     print(chat_history)
