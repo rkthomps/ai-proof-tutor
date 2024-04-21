@@ -19,16 +19,17 @@ attribute [local simp] h_dom h_rng h
 
 #eval h 0
 
-theorem h_onto: ∀ (y: ℚ), y ∈ h_rng → ∃ x, x ∈ h_dom ∧ h x = y := by
+theorem h_onto: ∀ y ∈ h_rng, ∃ x ∈ h_dom, h x = y := by
   intro y H
-  by_cases hy : 1 ≤ y
-  . exists 1 / y; simp at *;
+  by_cases Hy : 1 ≤ y
+  . exists 1 / y; simp at *
     constructor
     . constructor
-      . sorry
-      . sorry
+      . apply @lt_trans _ _ _ 0 <;> simp
+        apply @lt_of_lt_of_le _ _ 0 1 y <;> simp [Hy]
+      . apply inv_le_one; exact Hy
     . intro H1; absurd H1; linarith
-  . exists -y; simp at *;
+  . exists -y; simp at *
     constructor
     . constructor
       . linarith
