@@ -122,10 +122,11 @@ cases n with
 | succ n' => cases n' with
   | zero => simp
   | succ n'' =>
-    simp; rw [ih]; rw[ih]; ring_nf;
+    simp
+    rw [ih]; rw[ih]; ring_nf;
     rw [Nat.pow_succ]; rw [Nat.pow_succ]; rw[Nat.pow_succ]; ring_nf
     rw [<- Nat.sub_sub];
     have h: ∀ (m:ℕ), 4 + m * 24 - 3 = 1 + m * 24 := by
       intro m; rw [Nat.add_comm]; simp; rw [Nat.add_comm]
-    rw [h];
-    sorry
+    rw [h]; rw [Nat.add_sub_assoc]; rw [← Nat.mul_sub_left_distrib]; ring_nf
+    apply Nat.mul_le_mul_left; norm_num; linarith; linarith
