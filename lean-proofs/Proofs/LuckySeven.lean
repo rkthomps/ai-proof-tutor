@@ -25,8 +25,9 @@ theorem h_onto: ∀ (y: ℚ), y ∈ h_rng → ∃ x, x ∈ h_dom ∧ h x = y := 
   . exists 1 / y; simp at *;
     constructor
     . constructor
-      . sorry
-      . sorry
+      . have h1: 0 < y := by linarith
+        rw [← inv_pos] at h1; linarith
+      . apply inv_le_one; exact hy
     . intro H1; absurd H1; linarith
   . exists -y; simp at *;
     constructor
@@ -34,8 +35,6 @@ theorem h_onto: ∀ (y: ℚ), y ∈ h_rng → ∃ x, x ∈ h_dom ∧ h x = y := 
       . linarith
       . linarith
     . intro h1; linarith
-
-
 
 
 -- Proof by witness
