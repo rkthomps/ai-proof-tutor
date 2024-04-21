@@ -29,6 +29,9 @@ theorem h_onto: ∀ y ∈ h_rng, ∃ x ∈ h_dom, h x = y := by
       . apply @lt_trans _ _ _ 0 <;> simp
         apply @lt_of_lt_of_le _ _ 0 1 y <;> simp [Hy]
       . apply inv_le_one; exact Hy
+      --. have h1: 0 < y := by linarith
+      --  rw [← inv_pos] at h1; linarith
+      --. apply inv_le_one; exact hy
     . intro H1; absurd H1; linarith
   . exists -y; simp at *
     constructor
@@ -36,8 +39,6 @@ theorem h_onto: ∀ y ∈ h_rng, ∃ x ∈ h_dom, h x = y := by
       . linarith
       . linarith
     . intro h1; linarith
-
-
 
 
 -- Proof by witness
@@ -100,10 +101,11 @@ cases n with
 | succ n' => cases n' with
   | zero => simp
   | succ n'' =>
-    simp; rw [ih]; rw[ih]; ring_nf;
+    simp
+    rw [ih]; rw[ih]; ring_nf;
     rw [Nat.pow_succ]; rw [Nat.pow_succ]; rw[Nat.pow_succ]; ring_nf
     rw [<- Nat.sub_sub];
     have h: ∀ (m:ℕ), 4 + m * 24 - 3 = 1 + m * 24 := by
       intro m; rw [Nat.add_comm]; simp; rw [Nat.add_comm]
-    rw [h];
-    sorry
+    rw [h]; rw [Nat.add_sub_assoc]; rw [← Nat.mul_sub_left_distrib]; ring_nf
+    apply Nat.mul_le_mul_left; norm_num; linarith; linarith
