@@ -1,9 +1,10 @@
-
 import Mathlib.Tactic.Linarith
 import Mathlib.Tactic.Ring
 import Mathlib.Data.Finset.Basic
 import Mathlib.Combinatorics.Pigeonhole
 import Mathlib.Tactic.GCongr
+import Mathlib.Data.Rat.Floor
+import Mathlib.Data.Nat.Digits
 
 open Nat
 
@@ -40,34 +41,10 @@ theorem h_onto: ∀ y ∈ h_rng, ∃ x ∈ h_dom, h x = y := by
 
 
 -- Proof by witness
-def num_digits: ℕ → ℕ
-  | 0 => 1
-  | 1 => 1
-  | 2 => 1
-  | 3 => 1
-  | 4 => 1
-  | 5 => 1
-  | 6 => 1
-  | 7 => 1
-  | 8 => 1
-  | 9 => 1
-  | succ n => 1 + num_digits ((succ n) / 10)
-decreasing_by
-  apply Nat.div_lt_self; simp; simp
-
-
-def nat_div_ceil: ℕ -> ℕ -> ℕ
-  | _, zero => zero
-  | zero, _ => zero
-  | succ n1, succ n2 => 1 + (nat_div_ceil (n1 - n2) (succ n2))
-
-
-
-set_option maxRecDepth 8192
-set_option maxHeartbeats 2000000
-theorem exists_witness: ∃ (n: ℕ), 1 ≤ n ∧ num_digits (2 ^ n) ≠ (nat_div_ceil n 3) := by
-  sorry
-
+theorem exists_witness: ∃ (n: ℕ), 1 ≤ n ∧ List.length (digits 10 (2 ^ n)) ≠ ⌈(n : ℚ) / 3⌉₊ := by
+  apply Exists.intro 13
+  have hc : ⌈(13 : ℚ) / 3⌉₊ = 5 := by rfl
+  simp [hc]
 
 
 
