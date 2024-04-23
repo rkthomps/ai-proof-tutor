@@ -139,10 +139,11 @@ if __name__ == "__main__":
             proof_strategy = gr.Dropdown(["Contradiction", "Contrapositive", "Direct", "Induction", "Witness", "Other"], label="Proof Strategy - Optional", info="Do you know which proof strategy to use?")        
         with gr.Row():
             with gr.Column(scale = 1):
+                theorem = gr.Textbox(label = "Theorem Statement", lines = 4)
                 message = gr.Textbox(label = "Message", lines = 13)
                 submit = gr.Button("Send")
             with gr.Column(scale = 2):
-                chatbot = gr.Chatbot(show_copy_button = True, height = 345)
+                chatbot = gr.Chatbot(show_copy_button = True, height = 500)
                 clear = gr.ClearButton([message, chatbot])
         submit.click(get_tutor_response, [message, chatbot, proof_statement, stage, proof_strategy], [message, chatbot])
 
