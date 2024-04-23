@@ -1,0 +1,7 @@
+Proof: Let x and y be arbitrary integers.
+Suppose that both are odd. Then, x = 2a+1 for some
+integer a (depending on x) and y = 2b+1 for some integer
+b (depending on x). Their sum is x+y = (2a+1) + (2b+1) =
+2a+2b+2 = 2(a+b+1), so x+y is, by definition, even.
+Since x and y were arbitrary, the sum of any two odd
+integers is even.

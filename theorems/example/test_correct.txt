@@ -1,0 +1,1 @@
+Assume towards a proof by contradiction that at most 2 of the 25 days chosen are in the same month. Since there are 12 months and there are at most 2 days per month, there are at most 24 days chosen, which is less than 25 days. Proof follows by contradiction that there must be at least 3 of 25 days chosen falling in the same month.
