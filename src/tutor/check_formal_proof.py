@@ -92,7 +92,7 @@ def get_correct_formal(correct_no_lean_name: str, formalized_statement):
     correct_contents = __get_contents(correct_loc)
     return correct_contents.replace(f"{formalized_statement}\n", "")
 
-def get_formal_checker_response(informal_proof: str, proof_statement:str):
+def get_formal_checker_response(student_informal: str, proof_statement:str):
     # system message
     conversation = [{"role": "system", "content": "You are a proof translator. You take as input natural language proofs and you produce formal proofs in the Lean4 programming language. Exact translation line to line. Don’t try to make it into correct lean proof. No explanation included, pure Lean 4 formal proof. Do not use Lean 3 syntax such as begin and end."}]
     
@@ -109,7 +109,7 @@ def get_formal_checker_response(informal_proof: str, proof_statement:str):
     conversation.append({"role": "user", "content": f"Translate this informal proof:\n{correct_informal}\ninto Lean 4 formal proof with the following Lean 4 theorem statement:\n{formalized_statement}"})
     conversation.append({"role": "assistant", "content": correct_formal})
     
-    conversation.append({"role": "user", "content": f"Translate this informal proof:\n{informal_proof}\ninto Lean 4 formal proof with the following Lean 4 theorem statement:\n{formalized_statement}"})
+    conversation.append({"role": "user", "content": f"Translate this informal proof:\n{student_informal}\ninto Lean 4 formal proof with the following Lean 4 theorem statement:\n{formalized_statement}"})
     temperature = 0
     model_name = "gpt-4"
     gpt_formal = get_gpt4_response(
@@ -119,5 +119,4 @@ def get_formal_checker_response(informal_proof: str, proof_statement:str):
     )
     print(f"gpt formal proof:\n{gpt_formal}\n------------------------------")
     result = check_proof(gpt_formal, proof_statement + "Stub")
-    # print(result)
     return result.correct

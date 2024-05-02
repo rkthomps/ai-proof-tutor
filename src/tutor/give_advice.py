@@ -57,18 +57,18 @@ def get_tutor_response(user_message, chat_history, proof_statement, custom_proof
 
     # initial query (few-shot)
     if chat_history == []:
-        # num_examples = 1
+        num_examples = 1
         # few_shot = get_few_shot(stage[0:7], proof_strategy, num_examples)
         # for message in few_shot:
         #     conversation.append(message)
-        conversation.append({"role": "user", "content": f"Proof Statement:\n{proof_statement}\n{user_message}\n"})
     # continued conversation
     else:
         # chat_history: (user, assistant) tuples.
         for message in chat_history:
             conversation.append({"role": "user", "content": message[0]})
             conversation.append({"role": "assistant", "content": message[1]})
-        conversation.append({"role": "user", "content": user_message})
+            
+    conversation.append({"role": "user", "content": f"Proof Statement:\n{proof_statement}\n{user_message}\n"})
     
     # get gpt informal result
     temperature = 0
