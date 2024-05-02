@@ -4,6 +4,7 @@ import ipdb
 from dataclasses import dataclass
 import subprocess
 import re
+import shutil
 
 from tutor.query_openai import get_gpt4_response, get_client
 
@@ -40,12 +41,12 @@ def __write_temp_lakefile(stub_no_lean_name: str) -> None:
         fout.write(new_lakefile_contents)
 
 
-def check_proof(formal_proof: str, stub_no_lean_name: str) -> ProofCheckResult:
+def check_proof(gpt_formal: str, stub_no_lean_name: str) -> ProofCheckResult:
     assert not os.path.exists(TMP_OUT_LOC)
     stub_lean_name = f"{stub_no_lean_name}.lean"
     stub_loc = os.path.join(STUB_PROJECT_PATH, PROOF_DIR, stub_lean_name)
     stub_contents = __get_contents(stub_loc) 
-    stub_new_contents = stub_contents.replace("sorry", formal_proof)
+    stub_new_contents = stub_contents.replace("sorry", gpt_formal)
     cur_dir = os.path.abspath(os.curdir)
     temp_lakefile_loc = os.path.join(STUB_PROJECT_PATH, TMP_LAKEFILE_NAME)
     try:
@@ -66,6 +67,8 @@ def check_proof(formal_proof: str, stub_no_lean_name: str) -> ProofCheckResult:
         out_loc = os.path.join(STUB_PROJECT_PATH, TMP_OUT_LOC)
         if os.path.exists(out_loc):
             os.remove(out_loc)
+        tmp_lean_loc = os.path.join(STUB_PROJECT_PATH, PROOF_DIR, "tmp.lean")
+        shutil.copy(stub_loc, tmp_lean_loc)
         with open(stub_loc, "w") as fout:
             fout.write(stub_contents)
 
@@ -74,11 +77,7 @@ def get_formalized_statement(stub_no_lean_name: str):
     stub_lean_name = f"{stub_no_lean_name}.lean"
     stub_loc = os.path.join(STUB_PROJECT_PATH, PROOF_DIR, stub_lean_name)
     stub_contents = __get_contents(stub_loc)
-    return stub_contents.replace("sorry", "")
-    # lines = stub_contents.split('\n')
-    # for line in lines:
-    #     if re.match(r'^theorem', line):
-    #         return line.strip()
+    return stub_contents.replace("\nsorry\n", "")
 
 def get_correct_informal(correct_no_txt_name: str):
     assert not os.path.exists(TMP_OUT_LOC)
@@ -91,18 +90,7 @@ def get_correct_formal(correct_no_lean_name: str, formalized_statement):
     correct_lean_name = f"{correct_no_lean_name}.lean"
     correct_loc = os.path.join(STUB_PROJECT_PATH, PROOF_DIR, correct_lean_name)
     correct_contents = __get_contents(correct_loc)
-    return correct_contents.replace(formalized_statement, "")
-    # # return re.search(r'by\n(.*?)', __get_contents(correct_loc), re.DOTALL).group(1)
-    # lines = correct_contents.split('\n')
-    # theorem_found = False
-    # proof_lines = []
-    # for line in lines:
-    #     if not theorem_found and re.match(r'^theorem', line):
-    #         theorem_found = True
-    #     elif theorem_found:
-    #         proof_lines.append(line)
-    # print(proof_lines)
-    # return '\n'.join(proof_lines)
+    return correct_contents.replace(f"{formalized_statement}\n", "")
 
 def get_formal_checker_response(informal_proof: str, proof_statement:str):
     # system message
@@ -110,49 +98,26 @@ def get_formal_checker_response(informal_proof: str, proof_statement:str):
     
     # formalized proof statement
     formalized_statement = get_formalized_statement(proof_statement + "Stub")
-    # print(formalized_statement)
-    # print("-----")
+    print(f"formalized statement:\n{formalized_statement}\n------------------------------")
 
     # correct formal proof one-shot
     correct_informal = get_correct_informal(proof_statement + "Correct")
-    # print(correct_informal)
+    print(f"correct informal proof:\n{correct_informal}\n------------------------------")
     correct_formal = get_correct_formal(proof_statement + "Correct", formalized_statement)
-    # print(correct_formal)
-    # print("-----")
+    print(f"correct formal proof:\n{correct_formal}\n------------------------------")
+
     conversation.append({"role": "user", "content": f"Translate this informal proof:\n{correct_informal}\ninto Lean 4 formal proof with the following Lean 4 theorem statement:\n{formalized_statement}"})
     conversation.append({"role": "assistant", "content": correct_formal})
     
     conversation.append({"role": "user", "content": f"Translate this informal proof:\n{informal_proof}\ninto Lean 4 formal proof with the following Lean 4 theorem statement:\n{formalized_statement}"})
     temperature = 0
     model_name = "gpt-4"
-    formal_proof = get_gpt4_response(
+    gpt_formal = get_gpt4_response(
         conversation,
         temperature,
         model_name
     )
-    # print(formal_proof)
-    # pattern = r'begin\n(.*?)\nend'
-    # formal_proof = re.search(pattern, formal_proof, re.DOTALL).group(1)
-    # print(formal_proof)
-    result = check_proof(formal_proof, proof_statement + "Stub")
+    print(f"gpt formal proof:\n{gpt_formal}\n------------------------------")
+    result = check_proof(gpt_formal, proof_statement + "Stub")
     # print(result)
     return result.correct
-
-# if __name__ == "__main__":
-#     test_proof = """\
-# intros x y h1 h2
-# unfold odd at h1
-# unfold odd at h2
-# cases h1 with
-# | intro k1 hk1 =>
-# cases h2 with
-# | intro k2 hk2 =>
-#     exists (k1 + k2 + 1)
-#     rw [hk1]
-#     rw [hk2]
-#     rw [<- Nat.add_assoc]
-#     linarith
-# """
-
-# print(check_proof(test_proof, "OddSumStub"))
-    

@@ -73,7 +73,7 @@ def get_tutor_response(user_message, chat_history, proof_statement, custom_proof
     # get gpt informal result
     temperature = 0
     model_name = "gpt-4"
-    bot_message = get_gpt4_response(
+    gpt_message = get_gpt4_response(
         conversation,
         temperature,
         model_name
@@ -86,15 +86,15 @@ def get_tutor_response(user_message, chat_history, proof_statement, custom_proof
         formal_correct = get_formal_checker_response(user_message, statement_bank[proof_statement])
         print(formal_correct)
         if (formal_correct):
-            bot_message += "\n\n(Formalized Proof Attempt Passed \u2705)"
+            gpt_message += "\n\n(Formalized Proof Attempt Passed \u2705)"
         else:
-            bot_message += "\n\n(Formalized Proof Attempt Failed \u274C)"
+            gpt_message += "\n\n(Formalized Proof Attempt Failed \u274C)"
 
         # # informal correctness
         # temperature = 0
         # model_name = "gpt-4"
         # informal_correct = bool(get_gpt4_response(
-        #     [{"role": "user", "content": f"Tell me True if your response indicates the proof is correct, False if your response indicates the proof is incorrect.\nThis was your response:\n{bot_message}"}],
+        #     [{"role": "user", "content": f"Tell me True if your response indicates the proof is correct, False if your response indicates the proof is incorrect.\nThis was your response:\n{gpt_message}"}],
         #     temperature,
         #     model_name
         # ))
@@ -112,7 +112,7 @@ def get_tutor_response(user_message, chat_history, proof_statement, custom_proof
         #         conversation.pop()
         #         # feed back to GPT-4, say formalized attempt is incorrect
         #         conversation.append(({"role": "user", "content": f"Proof Statement:\n{proof_statement}\nMy proof attempt is incorrect when I formalized it into formal proof with Lean 4.\nMy Attempt:\n{user_message}\n"}))
-        #         bot_message = get_gpt4_response(
+        #         gpt_message = get_gpt4_response(
         #             conversation,
         #             temperature,
         #             model_name
@@ -123,7 +123,7 @@ def get_tutor_response(user_message, chat_history, proof_statement, custom_proof
         #         conversation.pop()
         #         # feed back to GPT-4, say formalized attempt is correct
         #         conversation.append(({"role": "user", "content": f"Proof Statement:\n{proof_statement}\nMy proof attempt is correct when I formalized it into formal proof with Lean 4.\nMy Attempt:\n{user_message}\n"}))
-        #         bot_message = get_gpt4_response(
+        #         gpt_message = get_gpt4_response(
         #             conversation,
         #             temperature,
         #             model_name
@@ -134,7 +134,7 @@ def get_tutor_response(user_message, chat_history, proof_statement, custom_proof
         #     case _, _:
         #         print("error")
 
-    chat_history.append((user_message, bot_message))
+    chat_history.append((user_message, gpt_message))
     time.sleep(1)
     return "", chat_history
 
