@@ -2,32 +2,50 @@
     "Contradiction": {
         "Stage 1": [
             {
-                "user": "I don't understand the problem.",
-                "assistant": "The problem statement is asking you to prove that there is not one integer that has a greater value than all other integers. An integer is a whole number, which doesn't have fractions."
+                "proof": "The square root of 2 is irrational.",
+                "user": "I am having trouble understanding the statement.",
+                "assistant": "The statement is asking you to prove that the square root of 2 is irrational.\nFirstly, let's understand what an irrational number is. An irrational number is a number that cannot be expressed as a ratio of two integers. In other words, it cannot be written in the form a/b, where a and b are integers (whole numbers), and b is not equal to zero.\nThe square root of 2 is the number which, when multiplied by itself, gives the number 2.\nSo, the task is to prove that there are no two integers that you can divide (one by the other) to get the square root of 2. If you can prove this, then you have shown that the square root of 2 is irrational."
+            },
+            {
+                "proof": "",
+                "user": "",
+                "assistant": ""
             }
         ],
         "Stage 2": [
             {
-                "user": "I don't know how to begin the proof.",
-                "assistant": "This statement can be proved by universal generalization, meaning that you can use an arbitrary integer to show that it can never be the greatest integer."
+                "proof": "",
+                "user": "",
+                "assistant": ""
+            },
+            {
+                "proof": "",
+                "user": "",
+                "assistant": ""
             }
         ],
         "Stage 3": [
             {
-                "user": "This is what I have so far:\nLet m be an arbitrary integer. Then n = m+1 is a witness. How do I continue the proof?",
-                "assistant": "You are on the right track! The next step is to compare m and n to show how the witness n proves that there doesn't exist a greatest integer."
+                "proof": "",
+                "user": "",
+                "assistant": ""
+            },
+            {
+                "proof": "",
+                "user": "",
+                "assistant": ""
             }
         ],
         "Stage 4": [
             {
-                "user": "Please verify the correctness of my proof:\nConsider 1 trillion as a witness. This is a very large number, but 2 trillion is an even bigger number, so 1 trillion is not the greatest integer. Therefore, there isn't a greatest integer, as desired.",
-                "assistant": "Your attempt unfortunately doesn't prove the statement: there does not exist a greatest integer. To correctly prove it, you want to show that the statement is true for any arbitrary integer, not just a single value, like 1 trillion. Try to generalize your proof so that it can correctly show that any integer is not the greatest integer."
-            }
-        ],
-        "Stage 5": [
+                "proof": "",
+                "user": "",
+                "assistant": ""
+            },
             {
-                "user": "A",
-                "assistant": "B"
+                "proof": "",
+                "user": "",
+                "assistant": ""
             }
         ]
     },
@@ -36,30 +54,44 @@
             {
                 "user": "A",
                 "assistant": "B"
+            },
+            {
+                "proof": "",
+                "user": "",
+                "assistant": ""
             }
         ],
         "Stage 2": [
             {
                 "user": "A",
                 "assistant": "B"
+            },
+            {
+                "proof": "",
+                "user": "",
+                "assistant": ""
             }
         ],
         "Stage 3": [
             {
                 "user": "A",
                 "assistant": "B"
+            },
+            {
+                "proof": "",
+                "user": "",
+                "assistant": ""
             }
         ],
         "Stage 4": [
             {
                 "user": "A",
                 "assistant": "B"
-            }
-        ],
-        "Stage 5": [
+            },
             {
-                "user": "A",
-                "assistant": "B"
+                "proof": "",
+                "user": "",
+                "assistant": ""
             }
         ]
     },
@@ -68,30 +100,44 @@
             {
                 "user": "A",
                 "assistant": "B"
+            },
+            {
+                "proof": "",
+                "user": "",
+                "assistant": ""
             }
         ],
         "Stage 2": [
             {
                 "user": "A",
                 "assistant": "B"
+            },
+            {
+                "proof": "",
+                "user": "",
+                "assistant": ""
             }
         ],
         "Stage 3": [
             {
                 "user": "A",
                 "assistant": "B"
+            },
+            {
+                "proof": "",
+                "user": "",
+                "assistant": ""
             }
         ],
         "Stage 4": [
             {
                 "user": "A",
                 "assistant": "B"
-            }
-        ],
-        "Stage 5": [
+            },
             {
-                "user": "A",
-                "assistant": "B"
+                "proof": "",
+                "user": "",
+                "assistant": ""
             }
         ]
     },
@@ -100,62 +146,74 @@
             {
                 "user": "A",
                 "assistant": "B"
+            },
+            {
+                "proof": "",
+                "user": "",
+                "assistant": ""
             }
         ],
         "Stage 2": [
             {
                 "user": "A",
                 "assistant": "B"
+            },
+            {
+                "proof": "",
+                "user": "",
+                "assistant": ""
             }
         ],
         "Stage 3": [
             {
                 "user": "A",
                 "assistant": "B"
+            },
+            {
+                "proof": "",
+                "user": "",
+                "assistant": ""
             }
         ],
         "Stage 4": [
             {
                 "user": "A",
                 "assistant": "B"
-            }
-        ],
-        "Stage 5": [
+            },
             {
-                "user": "A",
-                "assistant": "B"
+                "proof": "",
+                "user": "",
+                "assistant": ""
             }
         ]
     },
     "Witness": {
         "Stage 1": [
             {
-                "user": "A",
-                "assistant": "B"
+                "proof": "There does not exist a greatest integer.",
+                "user": "I don't understand the problem.",
+                "assistant": "The problem statement is asking you to prove that there is not one integer that has a greater value than all other integers. An integer is a whole number, which doesn't have fractions."
             }
         ],
         "Stage 2": [
             {
-                "user": "A",
-                "assistant": "B"
+                "proof": "There does not exist a greatest integer.",
+                "user": "I don't know how to begin the proof.",
+                "assistant": "This statement can be proved by universal generalization, meaning that you can use an arbitrary integer to show that it can never be the greatest integer."
             }
         ],
         "Stage 3": [
             {
-                "user": "A",
-                "assistant": "B"
+                "proof": "There does not exist a greatest integer.",
+                "user": "This is what I have so far:\nLet m be an arbitrary integer. Then n = m+1 is a witness. How do I continue the proof?",
+                "assistant": "You are on the right track! The next step is to compare m and n to show how the witness n proves that there doesn't exist a greatest integer."
             }
         ],
         "Stage 4": [
             {
-                "user": "A",
-                "assistant": "B"
-            }
-        ],
-        "Stage 5": [
-            {
-                "user": "A",
-                "assistant": "B"
+                "proof": "There does not exist a greatest integer.",
+                "user": "Please verify the correctness of my proof:\nConsider 1 trillion as a witness. This is a very large number, but 2 trillion is an even bigger number, so 1 trillion is not the greatest integer. Therefore, there isn't a greatest integer, as desired.",
+                "assistant": "Your attempt unfortunately doesn't prove the statement: there does not exist a greatest integer. To correctly prove it, you want to show that the statement is true for any arbitrary integer, not just a single value, like 1 trillion. Try to generalize your proof so that it can correctly show that any integer is not the greatest integer."
             }
         ]
     }

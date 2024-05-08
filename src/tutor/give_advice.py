@@ -25,7 +25,9 @@ def get_few_shot(stage, proof_strategy, num_examples):
             examples.append(random.choice(proof_bank[random_strategy][stage]))
     else:
         examples = random.sample(proof_bank[proof_strategy][stage], num_examples)
+    
     for example in examples:
+        proof = example["proof"]
         user = example["user"]
         assistant = example["assistant"]
         few_shot.append({"role": "user", "content": user})
@@ -90,50 +92,6 @@ def get_tutor_response(user_message, chat_history, proof_statement, custom_proof
         else:
             gpt_message += "\n\n(Formalized Proof Attempt Failed \u274C)"
 
-        # # informal correctness
-        # temperature = 0
-        # model_name = "gpt-4"
-        # informal_correct = bool(get_gpt4_response(
-        #     [{"role": "user", "content": f"Tell me True if your response indicates the proof is correct, False if your response indicates the proof is incorrect.\nThis was your response:\n{gpt_message}"}],
-        #     temperature,
-        #     model_name
-        # ))
-        # print(informal_correct)
-        # formal correctness
-
-        # # 4 cases of informal/formal
-        # match informal_correct, formal_correct:
-        #     # case 1: informal correct / formal correct
-        #     case True, True:
-        #         print("informal correct / formal correct, do nothing")
-        #     # case 2: informal correct / formal incorrect
-        #     case True, False:
-        #         print("informal correct / formal incorrect")
-        #         conversation.pop()
-        #         # feed back to GPT-4, say formalized attempt is incorrect
-        #         conversation.append(({"role": "user", "content": f"Proof Statement:\n{proof_statement}\nMy proof attempt is incorrect when I formalized it into formal proof with Lean 4.\nMy Attempt:\n{user_message}\n"}))
-        #         gpt_message = get_gpt4_response(
-        #             conversation,
-        #             temperature,
-        #             model_name
-        #         )
-        #     # case 3: informal incorrect / formal correct
-        #     case False, True:
-        #         print("informal incorrect / formal correct")
-        #         conversation.pop()
-        #         # feed back to GPT-4, say formalized attempt is correct
-        #         conversation.append(({"role": "user", "content": f"Proof Statement:\n{proof_statement}\nMy proof attempt is correct when I formalized it into formal proof with Lean 4.\nMy Attempt:\n{user_message}\n"}))
-        #         gpt_message = get_gpt4_response(
-        #             conversation,
-        #             temperature,
-        #             model_name
-        #         )
-        #     # case 4: informal incorrect / formal incorrect
-        #     case False, False:
-        #         print("informal incorrect / formal incorrect, correctly found mistakes, do nothing")
-        #     case _, _:
-        #         print("error")
-
     chat_history.append((user_message, gpt_message))
     time.sleep(1)
     return "", chat_history
@@ -144,15 +102,6 @@ if __name__ == "__main__":
         with open('theorems/example/statement_bank.json') as f:
             statement_bank = json.load(f)
         return list(statement_bank.keys())
-    
-    # def show_custom_textbox(selection):
-    #     if (selection == "Other"):
-    #         return gr.Textbox(visible = True)
-    #     else:
-    #         return gr.Textbox(visible = False)
-        
-    # def set_custom_statement(custom_proof):
-    #     return gr.Dropdown(value = custom_proof)
 
     def enable_submit_button(statement, custom, stage, message):
         if (statement != [] and stage != [] and message != ""):
@@ -189,8 +138,6 @@ if __name__ == "__main__":
                 with gr.Row():
                     clear = gr.ClearButton([message, chatbot], value = "Clear Chat", interactive = False)
                     submit = gr.Button(value = "Send", scale = 3, interactive = False)
-        # proof_statement.change(show_custom_textbox, proof_statement, custom_proof)
-        # custom_proof.change(set_custom_statement, custom_proof, proof_statement)
         proof_statement.change(enable_submit_button, [proof_statement, custom_proof, stage, message], submit)
         custom_proof.change(enable_submit_button, [proof_statement, custom_proof, stage, message], submit)
         stage.change(enable_submit_button, [proof_statement, custom_proof, stage, message], submit)
