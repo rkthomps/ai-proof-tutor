@@ -25,6 +25,8 @@ def get_few_shot(stage, proof_strategy, num_examples):
             examples.append(random.choice(proof_bank[random_strategy][stage]))
     else:
         examples = random.sample(proof_bank[proof_strategy][stage], num_examples)
+
+    print(examples)
     
     for example in examples:
         proof = example["proof"]
