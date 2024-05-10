@@ -61,10 +61,10 @@ def get_tutor_response(user_message, chat_history, proof_statement, custom_proof
 
     # initial query (few-shot)
     if chat_history == []:
-        num_examples = 1
-        # few_shot = get_few_shot(stage[0:7], proof_strategy, num_examples)
-        # for message in few_shot:
-        #     conversation.append(message)
+        num_examples = 2
+        few_shot = get_few_shot(stage[0:7], proof_strategy, num_examples)
+        for message in few_shot:
+            conversation.append(message)
     # continued conversation
     else:
         # chat_history: (user, assistant) tuples.
