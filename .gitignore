@@ -6,3 +6,6 @@ venv
 *.egg-info
 *.pyc
 .lake/
+
+.DS_Store
+*.DS_Store

@@ -30,7 +30,7 @@ def get_few_shot(stage, proof_strategy, num_examples):
         proof = example["proof"]
         user = example["user"]
         assistant = example["assistant"]
-        few_shot.append({"role": "user", "content": user})
+        few_shot.append({"role": "user", "content": f"Proof Statement:\n{proof}\n\n{user}"})
         few_shot.append({"role": "assistant", "content": assistant})
     return few_shot
         
@@ -70,7 +70,7 @@ def get_tutor_response(user_message, chat_history, proof_statement, custom_proof
             conversation.append({"role": "user", "content": message[0]})
             conversation.append({"role": "assistant", "content": message[1]})
             
-    conversation.append({"role": "user", "content": f"Proof Statement:\n{proof_statement}\n{user_message}\n"})
+    conversation.append({"role": "user", "content": f"Proof Statement:\n{proof_statement}\n\n{user_message}"})
     
     # get gpt informal result
     temperature = 0
