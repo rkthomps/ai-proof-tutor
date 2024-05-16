@@ -101,13 +101,13 @@ def get_formal_checker_response(student_informal: str, proof_statement:str):
     print(f"formalized statement:\n{formalized_statement}\n------------------------------")
 
     # correct formal proof one-shot
-    correct_informal = get_correct_informal(proof_statement + "Correct")
-    print(f"correct informal proof:\n{correct_informal}\n------------------------------")
-    correct_formal = get_correct_formal(proof_statement + "Correct", formalized_statement)
-    print(f"correct formal proof:\n{correct_formal}\n------------------------------")
+    # correct_informal = get_correct_informal(proof_statement + "Correct")
+    # print(f"correct informal proof:\n{correct_informal}\n------------------------------")
+    # correct_formal = get_correct_formal(proof_statement + "Correct", formalized_statement)
+    # print(f"correct formal proof:\n{correct_formal}\n------------------------------")
 
-    conversation.append({"role": "user", "content": f"Translate this informal proof:\n{correct_informal}\ninto Lean 4 formal proof with the following Lean 4 theorem statement:\n{formalized_statement}"})
-    conversation.append({"role": "assistant", "content": correct_formal})
+    # conversation.append({"role": "user", "content": f"Translate this informal proof:\n{correct_informal}\ninto Lean 4 formal proof with the following Lean 4 theorem statement:\n{formalized_statement}"})
+    # conversation.append({"role": "assistant", "content": correct_formal})
     
     conversation.append({"role": "user", "content": f"Translate this informal proof:\n{student_informal}\ninto Lean 4 formal proof with the following Lean 4 theorem statement:\n{formalized_statement}"})
     temperature = 0

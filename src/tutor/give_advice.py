@@ -11,8 +11,8 @@ from tutor.check_formal_proof import get_formal_checker_response
 
 
 def get_few_shot(stage, proof_strategy, num_examples):
-    with open('theorems/example/proof_bank.json') as f:
-        proof_bank = json.load(f)
+    with open('theorems/example/fewshot_bank.json') as f:
+        fewshot_bank = json.load(f)
 
     examples = []
     few_shot = []
@@ -22,11 +22,9 @@ def get_few_shot(stage, proof_strategy, num_examples):
     if not proof_strategy or proof_strategy == "Other":
         for _ in range(num_examples):
             random_strategy = random.choice(proof_strategies)
-            examples.append(random.choice(proof_bank[random_strategy][stage]))
+            examples.append(random.choice(fewshot_bank[random_strategy][stage]))
     else:
-        examples = random.sample(proof_bank[proof_strategy][stage], num_examples)
-
-    print(examples)
+        examples = random.sample(fewshot_bank[proof_strategy][stage], num_examples)
     
     for example in examples:
         proof = example["proof"]
@@ -52,7 +50,6 @@ def get_system_message(stage):
 def get_tutor_response(user_message, chat_history, proof_statement, custom_proof, stage, proof_strategy):
     if (proof_statement == "Other"):
         proof_statement = custom_proof
-    print(proof_statement)
 
     conversation = []
 
@@ -77,18 +74,18 @@ def get_tutor_response(user_message, chat_history, proof_statement, custom_proof
     # get gpt informal result
     temperature = 0
     model_name = "gpt-4"
-    gpt_message = get_gpt4_response(
-        conversation,
-        temperature,
-        model_name
-    )
+    # gpt_message = get_gpt4_response(
+    #     conversation,
+    #     temperature,
+    #     model_name
+    # )
+    gpt_message = ""
 
     # target stage 4 correctness
-    with open('theorems/example/statement_bank.json') as f:
-        statement_bank = json.load(f)
-    if (stage[0:7] == "Stage 4" and proof_statement in statement_bank):
-        formal_correct = get_formal_checker_response(user_message, statement_bank[proof_statement])
-        print(formal_correct)
+    with open('theorems/example/proof_bank.json') as f:
+        proof_bank = json.load(f)
+    if (stage[0:7] == "Stage 4" and proof_statement in proof_bank):
+        formal_correct = get_formal_checker_response(user_message, proof_bank[proof_statement])
         if (formal_correct):
             gpt_message += "\n\n(Formalized Proof Attempt Passed \u2705)"
         else:
@@ -101,9 +98,9 @@ def get_tutor_response(user_message, chat_history, proof_statement, custom_proof
 
 if __name__ == "__main__":
     def get_statements():
-        with open('theorems/example/statement_bank.json') as f:
-            statement_bank = json.load(f)
-        return list(statement_bank.keys())
+        with open('theorems/example/proof_bank.json') as f:
+            proof_bank = json.load(f)
+        return list(proof_bank.keys())
 
     def enable_submit_button(statement, custom, stage, message):
         if (statement != [] and stage != [] and message != ""):
