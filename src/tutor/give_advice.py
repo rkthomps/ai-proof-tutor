@@ -10,29 +10,20 @@ from tutor.query_openai import get_gpt4_response, get_client
 from tutor.check_formal_proof import get_formal_checker_response
 
 
-def get_few_shot(stage, proof_strategy, num_examples):
+def get_few_shot(stage, num_examples):
+    conversation = []
+
     with open('theorems/example/fewshot_bank.json') as f:
         fewshot_bank = json.load(f)
-
-    examples = []
-    few_shot = []
-
-    proof_strategies = ["Contradiction", "Contrapositive", "Direct", "Induction", "Witness"]
-
-    if not proof_strategy or proof_strategy == "Other":
-        for _ in range(num_examples):
-            random_strategy = random.choice(proof_strategies)
-            examples.append(random.choice(fewshot_bank[random_strategy][stage]))
-    else:
-        examples = random.sample(fewshot_bank[proof_strategy][stage], num_examples)
+    few_shot = random.sample(fewshot_bank[stage], num_examples)
     
-    for example in examples:
+    for example in few_shot:
         proof = example["proof"]
         user = example["user"]
         assistant = example["assistant"]
-        few_shot.append({"role": "user", "content": f"Proof Statement:\n{proof}\n\n{user}"})
-        few_shot.append({"role": "assistant", "content": assistant})
-    return few_shot
+        conversation.append({"role": "user", "content": f"Proof Statement:\n{proof}\n\n{user}"})
+        conversation.append({"role": "assistant", "content": assistant})
+    return conversation
         
 def get_system_message(stage):
     match stage:
@@ -47,7 +38,7 @@ def get_system_message(stage):
         case _:
             return {"role": "system", "content": "You are a tutor for an introductory math proof writing class. You are helping a student who can be in any stage of the proof writing process. Do not give any part of the proof.\n"}
 
-def get_tutor_response(user_message, chat_history, proof_statement, custom_proof, stage, proof_strategy):
+def get_tutor_response(user_message, chat_history, proof_statement, custom_proof, stage):
     if (proof_statement == "Other"):
         proof_statement = custom_proof
 
@@ -59,7 +50,7 @@ def get_tutor_response(user_message, chat_history, proof_statement, custom_proof
     # initial query (few-shot)
     if chat_history == []:
         num_examples = 2
-        few_shot = get_few_shot(stage[0:7], proof_strategy, num_examples)
+        few_shot = get_few_shot(stage[0:7], num_examples)
         for message in few_shot:
             conversation.append(message)
     # continued conversation
@@ -124,12 +115,9 @@ if __name__ == "__main__":
                     with gr.Row():
                         proof_statement = gr.Dropdown(get_statements() + ["Other"], label="Proof Statement", info="Which proof would you like assistance on?", allow_custom_value=True)
                     with gr.Row():
-                        custom_proof = gr.Textbox(label = "Proof Statement (Other)", info = "Input your proof statment here if you selected \"Other\".", lines = 8)
-                with gr.Group():
+                        custom_proof = gr.Textbox(label = "Proof Statement (Other)", info = "Input your proof statment here if you selected \"Other\".", lines = 10)
                     with gr.Row():
                         stage = gr.Dropdown(["Stage 1: I don't understand the problem.", "Stage 2: I don't know how to begin.", "Stage 3: I don't know how to proceed.", "Stage 4: I completed the proof."], label="Stage", info="What stage of the proof writing process are you on?")        
-                    with gr.Row():
-                        proof_strategy = gr.Dropdown(["Contradiction", "Contrapositive", "Direct", "Induction", "Witness", "Other"], label="Proof Strategy - Optional", info="Do you know which proof strategy to use?")        
             with gr.Column(scale = 2):
                 with gr.Group():
                     chatbot = gr.Chatbot(show_copy_button = True, height = 400)
@@ -142,7 +130,7 @@ if __name__ == "__main__":
         stage.change(enable_submit_button, [proof_statement, custom_proof, stage, message], submit)
         message.change(enable_submit_button, [proof_statement, custom_proof, stage, message], submit)
         chatbot.change(enable_clear_button, chatbot, clear)
-        submit.click(get_tutor_response, [message, chatbot, proof_statement, custom_proof, stage, proof_strategy], [message, chatbot])
+        submit.click(get_tutor_response, [message, chatbot, proof_statement, custom_proof, stage], [message, chatbot])
 
     tutor.launch(share=True)
     
