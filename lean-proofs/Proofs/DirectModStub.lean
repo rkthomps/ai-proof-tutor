@@ -10,3 +10,4 @@ open Nat
 
 -- Direct proof
 theorem direct_mod: ∀ (a b m : ℤ), 2 ≤ m → a % m = b % m → a^3 % m = b^3 % m := by
+sorry

@@ -10,3 +10,4 @@ open Nat
 
 -- Proof by witness
 theorem exists_witness: ∃ (n: ℕ), 1 ≤ n ∧ List.length (digits 10 (2 ^ n)) ≠ ⌈(n : ℚ) / 3⌉₊ := by
+sorry

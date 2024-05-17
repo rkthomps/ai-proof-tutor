@@ -20,3 +20,4 @@ attribute [local simp] r
 #eval (2 * (3 ^ 4)) + 1
 
 theorem r_eq: ∀ (n : Nat), r n = 2 * (3 ^ n) + 1 := by
+sorry

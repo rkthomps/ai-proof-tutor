@@ -19,3 +19,4 @@ theorem fifteen_days
   (h: ∀ g ∈ days, assign g ∈ days_of_week):
   ∃ p ∈ days_of_week,
     14 < (days.filter fun g => assign g = p).card := by
+sorry

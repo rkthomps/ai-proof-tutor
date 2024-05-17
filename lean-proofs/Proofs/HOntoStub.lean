@@ -19,3 +19,4 @@ attribute [local simp] h_dom h_rng h
 #eval h 0
 
 theorem h_onto: ∀ y ∈ h_rng, ∃ x ∈ h_dom, h x = y := by
+sorry
