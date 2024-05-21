@@ -121,7 +121,7 @@ if __name__ == "__main__":
             with gr.Column(scale = 2):
                 with gr.Group():
                     chatbot = gr.Chatbot(show_copy_button = True, height = 400)
-                    message = gr.Textbox(label = "Message", lines = 3)
+                    message = gr.Textbox(label = "Message", lines = 2)
                 with gr.Row():
                     clear = gr.ClearButton([message, chatbot], value = "Clear Chat", interactive = False)
                     submit = gr.Button(value = "Send", scale = 3, interactive = False)
