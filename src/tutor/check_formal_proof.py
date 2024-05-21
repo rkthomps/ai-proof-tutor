@@ -98,13 +98,10 @@ def get_formal_checker_response(student_informal: str, proof_statement:str):
     
     # formalized proof statement
     formalized_statement = get_formalized_statement(proof_statement + "Stub")
-    print(f"formalized statement:\n{formalized_statement}\n------------------------------")
 
     # correct formal proof one-shot
     correct_informal = get_correct_informal(proof_statement + "Correct")
-    print(f"correct informal proof:\n{correct_informal}\n------------------------------")
     correct_formal = get_correct_formal(proof_statement + "Correct", formalized_statement)
-    print(f"correct formal proof:\n{correct_formal}\n------------------------------")
 
     conversation.append({"role": "user", "content": f"Translate this informal proof:\n{correct_informal}\ninto Lean 4 formal proof with the following Lean 4 theorem statement:\n{formalized_statement}"})
     conversation.append({"role": "assistant", "content": correct_formal})
@@ -117,6 +114,5 @@ def get_formal_checker_response(student_informal: str, proof_statement:str):
         temperature,
         model_name
     )
-    print(f"gpt formal proof:\n{gpt_formal}\n------------------------------")
     result = check_proof(gpt_formal, proof_statement + "Stub")
     return result.correct

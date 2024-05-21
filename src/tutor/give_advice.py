@@ -65,12 +65,11 @@ def get_tutor_response(user_message, chat_history, proof_statement, custom_proof
     # get gpt informal result
     temperature = 0
     model_name = "gpt-4"
-    # gpt_message = get_gpt4_response(
-    #     conversation,
-    #     temperature,
-    #     model_name
-    # )
-    gpt_message = ""
+    gpt_message = get_gpt4_response(
+        conversation,
+        temperature,
+        model_name
+    )
 
     # target stage 4 correctness
     with open('theorems/example/proof_bank.json') as f:
