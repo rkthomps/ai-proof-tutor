@@ -20,12 +20,19 @@ attribute [local simp] r
 #eval (2 * (3 ^ 4)) + 1
 
 theorem r_eq: ∀ (n : Nat), r n = 2 * (3 ^ n) + 1 := by
-intros n;
-induction n with n ih;
-cases n with n;
-simp only [r, pow_zero, mul_one, add_zero];
-try {simp only [r, pow_one, mul_two, add_comm]};
-try {have h₁ : ∀ m, m < succ (succ n) → r m = 2 * (3 ^ m) + 1 := by intros m hm; exact ih m (lt_trans hm (lt_add_one _))};
-try {simp only [r, h₁, pow_succ, mul_add, mul_one, add_left_inj, mul_assoc, mul_left_comm]};
-try {ring_exp at ⊢};
-try {exact rfl}
+intro n
+induction' n using Nat.strong_induction_on with n ih
+unfold r
+cases n with
+| zero => simp
+| succ n' => cases n' with
+  | zero => simp
+  | succ n'' =>
+    simp
+    rw [ih]; rw[ih]; ring_nf;
+    rw [Nat.pow_succ]; rw [Nat.pow_succ]; rw[Nat.pow_succ]; ring_nf
+    rw [<- Nat.sub_sub];
+    have h: ∀ (m:ℕ), 4 + m * 24 - 3 = 1 + m * 24 := by
+      intro m; rw [Nat.add_comm]; simp; rw [Nat.add_comm]
+    rw [h]; rw [Nat.add_sub_assoc]; rw [← Nat.mul_sub_left_distrib]; ring_nf
+    apply Nat.mul_le_mul_left; norm_num; linarith; linarith
