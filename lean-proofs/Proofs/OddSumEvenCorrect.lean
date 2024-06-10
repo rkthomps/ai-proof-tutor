@@ -1,4 +1,3 @@
-
 import Mathlib.Tactic.Linarith
 
 def even(x: Nat): Prop := ∃ (k: Nat), x = 2 * k
