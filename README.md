@@ -1,5 +1,6 @@
-# <MAKE A TITLE>
-## Make a Description
+# Proofessor
+## Description
+The Proofessor is an AI-based tutor for students learning to write informal mathematical proofs, specifically in UC San Diego's CSE 20 Discrete Mathematics course. The tool leverages GPT-4 through few-shot prompting, auto-formalizes student-written proofs, and allows for multi-round interaction with the goal of providing a more accessible and reliable tutoring tool as compared to office hours and ChatGPT. We dissected the proof-writing process into five stages, ranging from not understanding the problem statement to having a complete correct or incorrect proof attempt, such that students can input the theorem they are working on and the stage they are at into the tool. The theorem and stage are specified in a few-shot prompt to GPT-4 when a student submits their question or progress, and the tool responds with feedback. We also integrated the auto-formalization of students' proofs into Lean, a language for formal theorem proving, to provide a second level of verification to the tool's responses. Upon evaluation of our tool against the GPT-4 baseline, we saw improvements in the tool's ability to provide more relevant responses and those that do not reveal the proof's correct answer. Evaluating the tool's auto-formalization, we found that the proof translations were not always faithful. Ultimately, we hope that the Proofessor can be used to help students as they learn to write proofs.
 
 ## Setup
 ### Clone the Project
@@ -9,38 +10,21 @@
 - Great! You've got a copy of this project on your machine!
 
 ### Set up your Python Environment
-- Make sure you have python installed on your machine. You can check this by running `python --version` or `python3 --version`. It is good practice to make a sort of sandbox environment for projects. In this case, run `python3 -m venv venv`. That will make a sandbox called `venv` for our project.
-- To activate our virtual environment (sandbox) run `source venv/bin/activate` on Mac/Linux. Run `venv\Scripts\activate` on Windows. Make sure you run this command whenver you want to run the tutor. 
+- Make sure you have Python installed on your machine. You can check this by running `python --version` or `python3 --version`. It is good practice to make a sort of sandbox environment for projects. In this case, run `python3 -m venv venv`. That will make a sandbox called `venv` for our project.
+- To activate our virtual environment (sandbox) run `source venv/bin/activate` on Mac/Linux. Run `venv\Scripts\activate` on Windows. Make sure you run this command whenever you want to run the tutor. 
 - Now you are ready to install the necessary packages for this project! Run `pip3 install -e .` to install the necessary packages.
 
+### Download Lean4
+
+
 ### Adding your OpenAi Keys
-Set the environment variable `OPENAI_API_KEY` to your api key. Set the environment variable `OPENAI_ORG_KEY` to your org key.
-You can create an api key [here](https://platform.openai.com/api-keys). You can find your organization key [here](https://platform.openai.com/account/organization). 
+Set the environment variable `OPENAI_API_KEY` to your API key. Set the environment variable `OPENAI_ORG_KEY` to your org key.
+You can create an API key [here](https://platform.openai.com/api-keys). You can find your organization key [here](https://platform.openai.com/account/organization). 
 
 ### Running the Proof Tutor
-- You are now ready to run the bare-bones proof tutor!
-- The proof tutor needs three things:
-  - A text file containing the theorem statement.
-  - A text file containing the correct proof.
-  - A text file containing a proof attempt.
-  given these things, the tutor comes up with a response and prints it to the screen. Right now the tutor is not so good. You can see that by running\
-`python3 src/tutor/give_advice.py theorems/example/statement.txt theorems/example/attempt.txt theorems/example/correct.txt`\
-This command runs the tutor on a silly theorem defined in [theorems/example/statement.txt](theorems/example/statement.txt), with a proof attempt in [theorems/example/attempt](theorems/example/attempt.txt) and a ground truth proof defined in [theorems/example/correct.txt](theorems/example/correct.txt).
-
-You should get an output similar to the following:
-```
-Theorem Statement:
-Prove that the sky is blue.
-
-Correct Proof:
-The sky is blue because you and I see a blue sky.
-
-Proof Attempt:
-The sky is blue because I see a blue sky.
-
-Response:
-Hello! How can I assist you today?
-```
+- You are now ready to run the proof tutor!
+- To run the tool, in the "ai-proof-tutor" directory", run `python3 src/tutor/give_advice.py`.
+- It would give you a local URL and a public URL, which allows you to run locally or publicly.
 
 ## Contributing
 Pushing your changes to the repository requires these steps:
@@ -52,13 +36,9 @@ Pushing your changes to the repository requires these steps:
 Getting updated changes requires these steps:
 - `git pull`
 
-If you want to push some expirimental changes, you can create a new branch. 
+If you want to push some experimental changes, you can create a new branch. 
 - To make a new branch, run `git checkout -B my-new-branch`.
 - To see which branch you are on, run `git branch`. When you run `git commit` it will make a commit only for the branch you are on.
 - To switch branches run `git checkout main` to switch to main or `git checkout my-new-branch` to switch to `my-new-branch`.
 - To push your branch to the central repository, commit your changes to `my-new-branch` and run `git push -u origin my-new-branch`
 - Then, others can review your changes and decide whether they want to merge them into the central code base. 
-
-
-
-
