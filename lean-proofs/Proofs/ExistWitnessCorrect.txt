@@ -1,0 +1,1 @@
+Consider n = 13 as a witness. Then 2^13 = 8192 has 4 digits. But ceiling(13/3) = ceiling(4.3) = 5.

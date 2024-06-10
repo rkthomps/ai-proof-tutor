@@ -1,0 +1,8 @@
+{
+    "Let x and y be odd natural numbers. Prove that x + y is even.": "OddSumEven",
+    "Let Q(−1,1] be the set of all rational numbers r such that −1 < r ≤ 1 and let Q[0,∞) be the set of all rational numbers r such that 0 ≤ r. Consider the function h : Q(−1,1] → Q[0,∞) given by: h(x) ={ −x : −1 < x ≤ 0; 1/x : 0 < x ≤ 1 Show that h is onto.": "HOnto",
+    "There exists an integer n>=1 such that 2^n does not have ceiling(n/3) digits in base 10.": "ExistWitness",
+    "Note that there are 7 distinct days in the week (Monday, Tuesday, Wednesday, Thursday, Friday, Saturday, Sunday). Prove that for any selection of 104 days of the year, at least 15 of those days fall on the same day of the week.": "FifteenDays",
+    "Let a and b be integers and let m be a positive integer with m ≥ 2. Prove that: (a mod m = b mod m) → (a^3 mod m = b^3 mod m).": "DirectMod",
+    "Consider the recursive formula: R(n) = 4R(n − 1) − 3R(n − 2) when n ≥ 2, R(0) = 3, R(1) = 7. Use strong induction to show that for all non-negative integers n (n ≥ 0), R(n) = 2(3^n) + 1": "RecursiveToExplicit"
+}

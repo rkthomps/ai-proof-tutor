@@ -1,1 +1,0 @@
-Show that at least three of any 25 days chosen must fall in the same month of the year.

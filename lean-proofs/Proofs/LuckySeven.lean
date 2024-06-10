@@ -86,6 +86,7 @@ theorem direct_mod: ∀ (a b m : ℤ), 2 ≤ m → a % m = b % m → a^3 % m = b
   -- rw [H2]
   simp [pow_three, Int.mul_emod, H2]
 
+
 -- Proof by strong induction
 def r:  ℕ -> ℕ
   | zero => 3
