@@ -94,7 +94,7 @@ def check_proof(gpt_formal: str, stub_no_lean_name: str) -> ProofCheckResult:
         if os.path.exists(out_loc):
             os.remove(out_loc)
         # tmp_lean_loc = os.path.join(STUB_PROJECT_PATH, PROOF_DIR, "tmp.lean")
-        shutil.copy(stub_loc, tmp_lean_loc)
+        # shutil.copy(stub_loc, tmp_lean_loc)
         with open(stub_loc, "w") as fout:
             fout.write(stub_contents)
 
