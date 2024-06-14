@@ -14,7 +14,8 @@ The Proofessor is an AI-based tutor for students learning to write informal math
 - To activate our virtual environment (sandbox) run `source venv/bin/activate` on Mac/Linux. Run `venv\Scripts\activate` on Windows. Make sure you run this command whenever you want to run the tutor. 
 - Now you are ready to install the necessary packages for this project! Run `pip3 install -e .` to install the necessary packages.
 
-### Download Lean4
+### Lean4 
+- Already installed -- check out the documentation linked below and PROOFS directory for configuration. (Not recommended to change anything within this dir)
 - Quick start: https://leanprover-community.github.io/get_started.html
 - (Optional): learn more about mathlib library to simplify the theorem proving process: https://github.com/leanprover-community/mathlib4
 
