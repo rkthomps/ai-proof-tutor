@@ -15,6 +15,8 @@ The Proofessor is an AI-based tutor for students learning to write informal math
 - Now you are ready to install the necessary packages for this project! Run `pip3 install -e .` to install the necessary packages.
 
 ### Download Lean4
+- Quick start: https://leanprover-community.github.io/get_started.html
+- (Optional): learn more about mathlib library to simplify the theorem proving process: https://github.com/leanprover-community/mathlib4
 
 
 ### Adding your OpenAi Keys
