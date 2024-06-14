@@ -16,7 +16,7 @@ The Proofessor is an AI-based tutor for students learning to write informal math
 
 ### Lean4 
 - Already installed -- check out the documentation linked below and PROOFS directory for configuration. (Not recommended to change anything within this dir)
-- Quick start: https://leanprover-community.github.io/get_started.html
+- If you need any change within formal proof functioanlity: https://leanprover-community.github.io/get_started.html
 - (Optional): learn more about mathlib library to simplify the theorem proving process: https://github.com/leanprover-community/mathlib4
 
 
