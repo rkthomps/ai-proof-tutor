@@ -24,7 +24,7 @@ The Proofessor is an AI-based tutor for students learning to write informal math
 Set the environment variable `OPENAI_API_KEY` to your API key. Set the environment variable `OPENAI_ORG_KEY` to your org key.
 You can create an API key [here](https://platform.openai.com/api-keys). You can find your organization key [here](https://platform.openai.com/account/organization). 
 
-** Warning for Windows Users: the def get_client() will try to access your OS environmental variables. Doing so, it can possibly get flagged by anti-virus on Windows 10 and prevent tool from working. If that happens, delete def_client() and refactor your code by using OPENAI_API_KEY and OPENAI_ORG_KEY as global variables. Reach out to github: Babuka6 if you need more help with Windows setup.   
+** Warning for Windows Users: the def get_client() will try to access your OS environmental variables. Doing so, it can possibly get flagged by anti-virus on Windows 10 and prevent tool from working. If that happens, delete def_client() and refactor your code by using OPENAI_API_KEY and OPENAI_ORG_KEY as global variables. Reach out to github: Babuka6 if you need more help with Windows setup. **  
 
 ### Running the Proof Tutor
 - You are now ready to run the proof tutor!
