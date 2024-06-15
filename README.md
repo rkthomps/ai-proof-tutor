@@ -13,11 +13,12 @@ The Proofessor is an AI-based tutor for students learning to write informal math
 - Make sure you have Python installed on your machine. You can check this by running `python --version` or `python3 --version`. It is good practice to make a sort of sandbox environment for projects. In this case, run `python3 -m venv venv`. That will make a sandbox called `venv` for our project.
 - To activate our virtual environment (sandbox) run `source venv/bin/activate` on Mac/Linux. Run `venv\Scripts\activate` on Windows. Make sure you run this command whenever you want to run the tutor. 
 - Now you are ready to install the necessary packages for this project! Run `pip3 install -e .` to install the necessary packages.
+- Ensure OpenAI and Gradio packages are installed. If not you can run `pip install openai` and `pip install gradio`.
 
 ### Lean4 
-- Already installed -- check out the documentation linked below and PROOFS directory for configuration. (Not recommended to change anything within this dir)
-- If you need any change within formal proofs configuration: https://leanprover-community.github.io/get_started.html
-- (Optional): learn more about mathlib library to simplify the theorem proving process: https://github.com/leanprover-community/mathlib4
+- To install Lean, follow this Lean Documentation [here](https://lean-lang.org/lean4/doc/setup.html).
+- Additional info [here](https://leanprover-community.github.io/get_started.html).
+- (Optional): Learn more about mathlib library to simplify the theorem proving process [here](https://github.com/leanprover-community/mathlib4).
 
 
 ### Adding your OpenAi Keys
@@ -46,4 +47,14 @@ If you want to push some experimental changes, you can create a new branch.
 - To see which branch you are on, run `git branch`. When you run `git commit` it will make a commit only for the branch you are on.
 - To switch branches run `git checkout main` to switch to main or `git checkout my-new-branch` to switch to `my-new-branch`.
 - To push your branch to the central repository, commit your changes to `my-new-branch` and run `git push -u origin my-new-branch`
-- Then, others can review your changes and decide whether they want to merge them into the central code base. 
+- Then, others can review your changes and decide whether they want to merge them into the central code base.
+
+## Credits
+The Proofessor was developed as part of the Early Research Scholars Program (ERSP), by Justin Yang, Sydney Zhang, Melanie Haro, and Anthony Chapov, advised by Kyle Thompson, Emily First, Saketh Kasibatla, and Professor Sorin Lerner.
+
+| Name | Github |
+| --- | --- |
+|Justin Yang|[jjustinyyang](https://github.com/jjustinyyang)|
+|Sydney Zhang|[sydneyzhang18](https://github.com/sydneyzhang18)|
+|Melanie Haro|[melanieharo22](https://github.com/melanieharo22)|
+|Anthony Chapov|[Babuka6](https://github.com/Babuka6)|
